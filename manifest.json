@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "AI Credit Guard",
+  "version": "1.0",
+  "description": "Shows token cost as you type in AI chats",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": ["content.js"]
+    }
+  ]
+}

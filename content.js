@@ -42,8 +42,27 @@ function createBar() {
 function updateBar(text) {
   const tokens = estimateTokens(text);
   const cost = (tokens / 1_000_000) * 3.0;
+  const score = qualityScore(text);
+
   document.getElementById("acg-tokens").textContent = tokens + " tokens";
   document.getElementById("acg-cost").textContent = "~$" + cost.toFixed(4);
+
+  const badge = document.getElementById("acg-badge");
+  const btn = document.getElementById("acg-btn");
+
+  if (score === "good") {
+    badge.textContent = "✓ Good";
+    badge.style.color = "#4ade80";
+    btn.style.display = "none";
+  } else if (score === "warn") {
+    badge.textContent = "⚠ Long";
+    badge.style.color = "#fbbf24";
+    btn.style.display = "inline-block";
+  } else {
+    badge.textContent = "✗ Weak";
+    badge.style.color = "#f87171";
+    btn.style.display = "inline-block";
+  }
 }
 
 function waitForTextarea() {

@@ -48,7 +48,11 @@ function createBar() {
     ">⚡ Optimize</button>
   `;
   document.body.appendChild(bar);
-  console.log("Bar created! ✅");
+  document.getElementById("acg-btn").addEventListener("click", function() {
+  const textarea = document.querySelector('[data-testid="chat-input"]');
+  const text = textarea.innerText;
+  optimizePrompt(text);
+});
 }
 
 function updateBar(text) {
@@ -75,6 +79,44 @@ function updateBar(text) {
     badge.style.color = "#f87171";
     btn.style.display = "inline-block";
   }
+}
+function optimizePrompt(text) {
+  const textarea = document.querySelector('[data-testid="chat-input"]');
+  const btn = document.getElementById("acg-btn");
+
+  btn.textContent = "⏳ Working...";
+  btn.disabled = true;
+
+  fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": "YOUR_API_KEY_HERE",
+      "anthropic-version": "2023-06-01"
+    },
+    body: JSON.stringify({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 300,
+      system: "Rewrite the user's prompt to be concise and clear. Remove filler words. Return ONLY the rewritten prompt, nothing else.",
+      messages: [{ role: "user", content: text }]
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const optimized = data.content[0].text;
+
+    // Replace the text in the chat box
+    textarea.innerText = optimized;
+    textarea.dispatchEvent(new Event("input", { bubbles: true }));
+
+    btn.textContent = "⚡ Optimize";
+    btn.disabled = false;
+  })
+  .catch(err => {
+    console.log("Error:", err);
+    btn.textContent = "⚡ Optimize";
+    btn.disabled = false;
+  });
 }
 
 function waitForTextarea() {

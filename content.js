@@ -63,6 +63,17 @@ function waitForTextarea() {
   }
 }
 
+function qualityScore(text) {
+  if (!text || text.length < 10) return "good";
+
+  const fillerWords = (text.match(/\b(please|kindly|very|really|just|basically|actually|literally)\b/gi) || []).length;
+  const wordCount = text.trim().split(/\s+/).length;
+
+  if (fillerWords > 2) return "bad";
+  if (wordCount > 60) return "warn";
+  return "good";
+}
+
 // Also try creating the bar after page fully loads
 window.addEventListener("load", () => {
   setTimeout(waitForTextarea, 1000);

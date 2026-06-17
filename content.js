@@ -30,10 +30,22 @@ function createBar() {
     align-items: center;
     box-shadow: 0 4px 20px rgba(0,0,0,0.5);
   `;
-  bar.innerHTML = `
+ bar.innerHTML = `
     <span>🛡</span>
     <span id="acg-tokens" style="color:#a5b4fc;font-weight:700">0 tokens</span>
     <span id="acg-cost" style="color:#86efac">~$0.0000</span>
+    <span id="acg-badge" style="font-size:12px">✓ Good</span>
+    <button id="acg-btn" style="
+      display:none;
+      background:linear-gradient(135deg,#6366f1,#8b5cf6);
+      color:white;
+      border:none;
+      border-radius:20px;
+      padding:4px 12px;
+      font-size:12px;
+      font-weight:700;
+      cursor:pointer;
+    ">⚡ Optimize</button>
   `;
   document.body.appendChild(bar);
   console.log("Bar created! ✅");
